@@ -1,2 +1,2 @@
 # FastBuffHelper
-FastBuff DireMaul-ID Spread Helper  for WoW Classic
+FastBuff DireMaul-ID Spread and Sort for WoW Classic
