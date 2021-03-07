@@ -56,7 +56,7 @@ print("sorting new");
 					has_dm_s=fbh_check_for_spell(name,22820,0)
 					has_dm_f=fbh_check_for_spell(name,22817,0)
 					has_dm_m=fbh_check_for_spell(name,22818,0)
-					print("Player: "..name.." Worldbuffs: ".." Ony: "..tostring(has_ony).." ZG: "..tostring(has_zg).." SF: "..tostring(has_sf).."DM Buffs:".." Slip: "..tostring(has_dm_s).." Fengus: "..tostring(has_dm_f).." Moldar: "..tostring(has_dm_m))
+					--print("Player: "..name.." Worldbuffs: ".." Ony: "..tostring(has_ony).." ZG: "..tostring(has_zg).." SF: "..tostring(has_sf).."DM Buffs:".." Slip: "..tostring(has_dm_s).." Fengus: "..tostring(has_dm_f).." Moldar: "..tostring(has_dm_m))
 							if zone==my_zone or zone==my_zone_backup then --ony/zg/sf
 								if has_ony and has_zg and has_sf then
 								SetRaidSubgroup(i,6)
