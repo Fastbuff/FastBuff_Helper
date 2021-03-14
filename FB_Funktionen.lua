@@ -56,6 +56,7 @@ function fbh_player_hasRights()
     return hasRights
 end
 
+
 function fbh_count_wait()
     local cwait_gm = GetNumGroupMembers()
     local cwait_count = 0
@@ -194,4 +195,53 @@ function fbh_check_for_spell(checkPlayer,checkSpellID,treshhold)-- return false 
     end
     return false
     end
+
+  function fbh_init_port()
+        if UnitInRaid("player") then
+            if first_launch then 
+                for i=1,8 do
+                    members[i]=0
+                 end
+                my_name, my_rank, my_subgroup, my_level, my_class, my_fileName,my_zone_backup, my_online, my_isDead, my_role, my_isML, my_combatRole= GetRaidRosterInfo(UnitInRaid("player"))
+                my_zone=GetZoneText()
+                first_launch=false
+                print("fbh_port initalized")
+                end
+        else
+        print("you are not in raid")
+        end
+    end
+
+    function fbh_changed_member()
+        local member_count=0
+            if IsInRaid() then
+                for i=1,40 do  
+                
+                    local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i);
+                    if name then
+                        member_count=member_count+1
+                    end
+                end
+            end
+            --print("membercount"..member_count.."membercountold"..member_count_old)
+            if member_count>member_count_old then
+                fbh_welcome_msg()
+                fbh_info_msg_port()
+                member_count_old=member_count
+            elseif member_count<member_count_old then
+                -- TODO: Implement Wisper HF&GL on Leave
+                member_count_old=member_count
+            end
+            
+    end
+
+function fbh_roosterupdate()
+        fbh_init_port()
+        if my_zone_backup=="Feralas" then -- rooster update for Feralas port 
+            print("roosterupdated")
+            fbh_changed_member()
+            fbh_sort()
+        end
+end
+
     

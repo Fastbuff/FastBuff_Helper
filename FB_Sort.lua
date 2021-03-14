@@ -1,29 +1,7 @@
-members={}
-first_launch = true
-runout_treshhold = 0.8 -- when the buff should be counted as running out
 
-function fbh_init()
-	if UnitInRaid("player") then
-		if first_launch then 
-			fbh_initmembers()
-			my_name, my_rank, my_subgroup, my_level, my_class, my_fileName,my_zone_backup, my_online, my_isDead, my_role, my_isML, my_combatRole= GetRaidRosterInfo(UnitInRaid("player"))
-			my_zone=GetZoneText()
-			first_launch=false
-			print("fbh_port initalized")
-			end
-	else
-	print("you are not in raid")
-	end
-end
-
-function fbh_initmembers()
- for i=1,8 do
-	members[i]=0
- end
-end
 function fbh_countmembers()
-fbh_init()
-fbh_initmembers()
+	--fbh_init_port()
+	--fbh_initmembers()
 	if IsInRaid() then
 		for i=1,40 do  
 			local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i);
@@ -43,9 +21,9 @@ fbh_initmembers()
 end
 
 function fbh_sort()
-    fbh_init();
-fbh_countmembers()
-print("sorting new");
+    --fbh_init_port()
+	fbh_countmembers()
+	print("sorting new");
 	for i=1,40 do  
 			local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i);
 				if name then
@@ -88,22 +66,6 @@ print("sorting new");
 	end		
 end
 
-function fbh_check_for_spell(checkPlayer,checkSpellID,treshhold)-- return false if buff is running out or not exiting
-    for i=1,40 do
-    name,_, _,debuffType,duration,expirationTime , _,_, _, spellId,_ = UnitBuff(checkPlayer,i)
-    if name then 
-        if spellId==checkSpellID then
-        runout=((GetTime()-expirationTime))
-        runout_str=format("%.2f",runout)
-        duration_str=format("%.2f",duration)
-        --print(name.."=".."exptime= "..expirationTime..":"..runout.."/"..duration.."s")
-            if runout<duration*treshhold then
-                return false
-                else
-                return true
-            end
-        end
-    end
-    end
-    return false
-    end
+
+
+

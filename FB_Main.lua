@@ -17,6 +17,7 @@ function FBHA_OnEvent(self, event, ...)
         fbh_loaded = true
     end                                             -- end if ADDON_LOADED
     if fbh_loaded then
+        fbh_init_port() -- Init Variables for Porting only called once
         if event == "CHAT_MSG_WHISPER" then
             local fbh_f_msg, fbh_f_sender = select('1', ...), gsub(select('2', ...), FBHREALM, "")
             if strfind(fbh_f_msg, FBHCode, 1) == 1 then
@@ -35,6 +36,7 @@ function FBHA_OnEvent(self, event, ...)
         end
 
         if event == "GROUP_ROSTER_UPDATE" then
+                fbh_roosterupdate() -- added function call for updatet rooster
                 local gru_inIni, gru_iniTyp = IsInInstance("player")
                 if gru_inIni == false and getn(fbh_hooked_sender) > 0 then
                 -- message("party left")
