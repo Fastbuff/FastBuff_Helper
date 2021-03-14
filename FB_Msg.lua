@@ -44,7 +44,7 @@ function fbh_info_msg_port()
 					SendChatMessage("Portal bei "..porter.."!","RAID_WARNING",nil,name);
 					
 			end
-		endw
+		end
 	end
 end
 
