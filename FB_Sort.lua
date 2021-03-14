@@ -23,7 +23,7 @@ end
 
 function fbh_sort()
 	fbh_countmembers()
-	print("sorting new");
+	--print("sorting new");
 	for i=1,40 do  
 			local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i);
 				if name then

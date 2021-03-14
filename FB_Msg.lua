@@ -7,7 +7,7 @@ fbh_countmembers();
 	
 		if my_zone==zone or zone==my_zone_backup then
 			SendChatMessage("Du bist schon in "..zone..", wenn du dennoch einen Port willst sag Bescheid.","WHISPER",nil,name)
-			 print("dont port");
+			-- print("dont port");
 		else
 			SendChatMessage(zone.." goto "..my_zone,"WHISPER",nil,name);
 			SendChatMessage("Port auf "..name.." Bitte klicken!","RAID_WARNING",nil,name);
