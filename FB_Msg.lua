@@ -1,6 +1,5 @@
 
 function fbh_port_msg()
---fbh_init_port();
 fbh_countmembers();
   if(UnitExists("target")) then
 	local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(UnitInRaid(fbh_targetName()));
@@ -22,7 +21,6 @@ fbh_countmembers();
 	end	
 end
 function fbh_info_msg_port()
---fbh_init_port()
 	if IsInRaid() then
 			for i=1,40 do  
 				local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i);
@@ -46,12 +44,15 @@ function fbh_info_msg_port()
 					SendChatMessage("Portal bei "..porter.."!","RAID_WARNING",nil,name);
 					
 			end
-		end
+		endw
 	end
 end
 
 function fbh_welcome_msg() -- todo: check or in id or port it
 	if UnitIsGroupLeader("player") then
 		SendChatMessage("Willkommen bei FASTBUFF !","RAID_WARNING",nil,name);
+		if my_zone_backup=="Feralas" then
+			SendChatMessage("Das hier ist die Port ID, NICHT REINLAUFEN!","RAID_WARNING",nil,name);
+		end
 	end
 end

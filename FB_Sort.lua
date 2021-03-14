@@ -1,8 +1,9 @@
 
 function fbh_countmembers()
-	--fbh_init_port()
-	--fbh_initmembers()
 	if IsInRaid() then
+		for i=1,8 do
+			members[i]=0
+		 end
 		for i=1,40 do  
 			local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i);
 				if name then
@@ -21,7 +22,6 @@ function fbh_countmembers()
 end
 
 function fbh_sort()
-    --fbh_init_port()
 	fbh_countmembers()
 	print("sorting new");
 	for i=1,40 do  

@@ -199,9 +199,6 @@ function fbh_check_for_spell(checkPlayer,checkSpellID,treshhold)-- return false 
   function fbh_init_port()
         if UnitInRaid("player") then
             if first_launch then 
-                for i=1,8 do
-                    members[i]=0
-                 end
                 my_name, my_rank, my_subgroup, my_level, my_class, my_fileName,my_zone_backup, my_online, my_isDead, my_role, my_isML, my_combatRole= GetRaidRosterInfo(UnitInRaid("player"))
                 my_zone=GetZoneText()
                 first_launch=false
