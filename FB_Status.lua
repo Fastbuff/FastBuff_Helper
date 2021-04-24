@@ -21,19 +21,6 @@ fbh_guiFrame:SetScript('OnMouseUp', function(self)
     self:StopMovingOrSizing()
 end)
 
--- fbh_nameFrame = CreateFrame('Frame', nil, fbh_guiFrame)
--- fbh_nameFrame:SetSize(100, 15)
--- fbh_nameFrame:ClearAllPoints()
--- fbh_nameFrame:SetPoint('TOPLEFT', 0, 0)
--- fbh_nameFrame:SetText('NAME')
-
--- fbh_statusFrame = CreateFrame('Frame', nil, fbh_guiFrame)
--- fbh_statusFrame:SetSize(fbh_width - 100, 15)
--- fbh_statusFrame:ClearAllPoints()
--- fbh_statusFrame:SetPoint('TOPLEFT', 100, 0)
--- fbh_statusFrame:SetText('STATUS')
-
-
 
 local reload = CreateFrame('Button', nil, fbh_guiFrame, 'GameMenuButtonTemplate')
 reload:SetSize(80, 24)
@@ -118,7 +105,5 @@ SlashCmdList["fbhStatus"] = function(message)
     fbh_show_window()
 end
 
--- fbh_guiFrame:Show()
 fbh_show_window()
--- fbh_update_status()
 fbh_update_status()

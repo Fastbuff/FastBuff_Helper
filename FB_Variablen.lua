@@ -8,7 +8,6 @@ FBHPortalMessage = "<FastBuff Airlines> Achtung, hier entsteht ein Portal nach "
 FBHMageW = "Ein Portal gibts auf Wunsch dann am Nordeingang von "
 FBHPrefix = "FBHADDON"
 FBHStatus = "FBHSTATUS"
--- FBHDelete = "FBHDELETE"
 FBHHookSender = "FBHHOOKSENDER"
 fbh_loaded = false
 FBHPLAYER = GetUnitName("player")

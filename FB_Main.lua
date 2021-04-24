@@ -7,8 +7,6 @@ FBHA:RegisterEvent("CHAT_MSG_ADDON")
 FBHA:RegisterEvent("CHAT_MSG_SYSTEM")
 FBHA:RegisterEvent("CHAT_MSG_WHISPER")
 FBHA:RegisterEvent("GROUP_ROSTER_UPDATE")
--- FBHA:RegisterEvent("RAID_ROSTER_UPDATE")
--- FBHA:RegisterEvent("PARTY_LEADER_CHANGED")
 
 function FBHA_OnEvent(self, event, ...)
     if event == "ADDON_LOADED" then
