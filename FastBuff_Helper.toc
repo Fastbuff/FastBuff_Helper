@@ -1,6 +1,6 @@
 ## Interface: 11307
-## Title: |cffffff00FastBuff|r |cff888888ID Spread|r |cffbb00bbInvite Helper|r |cffffffffv2.1.0|r
-## Notes: Makro erstellen mit: /run fbh_kickto( "SpielerName" )
+## Title: |cffffff00FastBuff|r |cffbb00bbHelper|r |cffffffffv2.1.0|r
+## Notes: FastBuff DireMaul-ID Spread Helper for WoW Classic
 ## Author: Jrojimo (Naxxani at EU-Heartstriker [classic]) + Piylot (Piylot at EU-Heartstriker [classic])
 ## Version: 2.1.0
 ## SavedVariablesPerCharacter: 
