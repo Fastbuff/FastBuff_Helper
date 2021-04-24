@@ -295,8 +295,6 @@ local function hideKICKWhispers(self, event, msg, author, ...)
     hide_whisper = false
     if hide_kick then
         if msg:find(FBHCode, 1, true) then
-            local strip_msg = gsub(msg, FBHCode, "")
-            msg = strip_msg
             hide_whisper = true
         end
     end
