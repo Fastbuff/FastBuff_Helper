@@ -4,7 +4,11 @@ function fbh_send_msg(msg)
 end
 
 function fbh_whisper(message, recipient)
-    SendChatMessage(message, "WHISPER", nil, recipient)
+    local w_recipient = fbh_targetName()
+    if recipient ~= nil then
+        w_recipient = recipient
+    end
+    SendChatMessage(message, "WHISPER", nil, w_recipient)
 end
 
 function fbh_portal_msg(city)
@@ -12,9 +16,13 @@ function fbh_portal_msg(city)
     fbh_send_msg(port_msg)
 end
 
-function fbh_portalmaker(recipient)
+function fbh_portalmaker(recipient, override)
+    local port_maker = override
     if FBHassist ~= nil then
-        fbh_whisper(FBHMageW .. FBHassist, recipient)
+        if port_maker == nil then
+            port_maker = FBHassist
+        end
+        fbh_whisper(FBHMageW .. port_maker, recipient)
     end
 end
 

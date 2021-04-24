@@ -1,8 +1,8 @@
 ## Interface: 11307
-## Title: |cffffff00FastBuff|r |cffbb00bbHelper|r |cffffffffv2.1.0|r
+## Title: |cffffff00FastBuff|r |cffbb00bbHelper|r |cffffffffv2.1.1|r
 ## Notes: FastBuff DireMaul-ID Spread Helper for WoW Classic
 ## Author: Jrojimo (Naxxani at EU-Heartstriker [classic]) + Piylot (Piylot at EU-Heartstriker [classic])
-## Version: 2.1.0
+## Version: 2.1.1
 ## SavedVariablesPerCharacter: 
 ## SavedVariables: 
 ## DefaultState: disabled

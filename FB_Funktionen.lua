@@ -22,7 +22,13 @@ function fbh_targetInRaid(fbh_tir_name)
     return tir_tir
 end
 
-function fbh_kickto(fbh_id_gruppenfuehrer)
+function fbh_kickto(fbh_id_gruppenfuehrer, hide_msg)
+    fbh_add_dnd_author(fbh_id_gruppenfuehrer)
+    if hide_msg ~= nil and hide_msg == 0 then
+        hide_kick = true
+    else
+        hide_kick = false
+    end
     if UnitInRaid("player") then
         FBHKicker = true
         local fbh_kunde = fbh_targetName()
@@ -254,3 +260,48 @@ function fbh_summon_msg(group, kassierer, portale)
         end
     end
 end
+
+function fbh_add_dnd_author(author_to_add)
+    local name_to_add = gsub(author_to_add, FBHREALM, "")
+    local author_filter_size = getn(fbh_dnd_filter_author)
+    if author_filter_size == 0 then
+        fbh_dnd_filter_author[1] = name_to_add
+    elseif author_filter_size > 0 then
+        for arr = 1, author_filter_size do
+            if fbh_dnd_filter_author[arr] == name_to_add then
+                return false
+            else
+                fbh_dnd_filter_author[author_filter_size + 1] = name_to_add
+            end
+        end
+    end
+end
+
+local function fbh_hideDND(self, event, msg, author, ...)
+    ret_dnd = false
+    local dnd_author = gsub(author, FBHREALM, "")
+    local author_dnd_size = getn(fbh_dnd_filter_author)
+    if author_dnd_size >= 1 then
+        for arr = 1, author_dnd_size do
+            if fbh_dnd_filter_author[arr] == dnd_author then
+                ret_dnd = true
+            end
+        end
+    end -- Always show messages if we are not hiding codewords
+    return ret_dnd
+end
+
+local function hideKICKWhispers(self, event, msg, author, ...)
+    hide_whisper = false
+    if hide_kick then
+        if msg:find(FBHCode, 1, true) then
+            local strip_msg = gsub(msg, FBHCode, "")
+            msg = strip_msg
+            hide_whisper = true
+        end
+    end
+    return hide_whisper
+end
+
+ChatFrame_AddMessageEventFilter("CHAT_MSG_DND", fbh_hideDND)
+ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", hideKICKWhispers)
