@@ -56,7 +56,7 @@ end
 function fbh_info_msg()
     fbh_init()
     if IsInRaid() then
-        for i=1,40 do  
+        for i=1, 40 do  
             local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i)
             if name then 
                 if subgroup==8  then
