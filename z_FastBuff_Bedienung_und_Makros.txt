@@ -17,6 +17,10 @@ Makros:
 
 /run fbh_kickto( "Charname" )
 
+### Makro zum verschieben des Targets in eine ID und ausgehenden whisper im Chat ausblenden
+
+/run fbh_kickto( "Charname", 0 )
+
 ######################
 
 ### Makros für Portal-Nachricht im Raid oder Gruppe
