@@ -48,7 +48,6 @@ function FBHA_OnEvent(self, event, ...)
                 end
             end
         end
-
         if event == "GROUP_ROSTER_UPDATE" then
             fbh_get_tankassist()
             if not UnitInRaid("player") then
