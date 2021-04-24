@@ -50,7 +50,6 @@ function FBHA_OnEvent(self, event, ...)
         end
 
         if event == "GROUP_ROSTER_UPDATE" then
-            print("GROUP_ROSTER_UPDATE")
             fbh_get_tankassist()
             if not UnitInRaid("player") then
                 fbh_kill_status()
