@@ -1,0 +1,42 @@
+Vorweg:
+
+Das setzen eines Chars als Maintank setzt den Namen als Kassierer
+
+Das setzen eines Chars als Hauptassistent setzt den Namen als Portalsteller-Mage
+
+################################################################################
+
+Makros:
+### Makro zum registriern als Status-Empfänger:
+
+/run fbh_statusempfang( "Charname" )
+
+######################
+
+### Makro zum verschieben des Targets in eine ID
+
+/run fbh_kickto( "Charname" )
+
+######################
+
+### Makros für Portal-Nachricht im Raid oder Gruppe
+
+/run fbh_portal_msg("Stormwind")
+/run fbh_portal_msg("Ironforge")
+/run fbh_portal_msg("Darnassus")
+
+######################
+
+### Makro für Beschwörung des Targets im Raid oder Gruppe und optionale Whisper
+### wenn nichts in den Klammern steht wird nur eine Raid/Gruppennachricht und ein Whisper ans Target geschickt dass er rangeportet wird.
+
+/run fbh_summon_msg(x, y, z)
+
+### wenn x = 0 dann passiert nix
+### wenn x = zwischen 1 und 7 dann wird das Target automatisch in entsprechende Gruppe verschoben
+
+### wenn y = 1 dann bekommt Target Whisper bei wem zu bezahlen ist falls einer als Maintank gesetzt ist
+
+### wenn z = 1 dann bekommt Target Whisper wer Portale stellt falls einer Hauptassistent eingestellt ist
+
+######################
