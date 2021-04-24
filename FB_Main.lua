@@ -6,7 +6,6 @@ FBHA:RegisterEvent("ADDON_LOADED")
 FBHA:RegisterEvent("CHAT_MSG_ADDON")
 FBHA:RegisterEvent("CHAT_MSG_SYSTEM")
 FBHA:RegisterEvent("CHAT_MSG_WHISPER")
-FBHA:RegisterEvent("CHAT_MSG_DND")
 FBHA:RegisterEvent("GROUP_ROSTER_UPDATE")
 
 function FBHA_OnEvent(self, event, ...)
@@ -14,18 +13,6 @@ function FBHA_OnEvent(self, event, ...)
         fbh_loaded = true
     end
     if fbh_loaded then
-        
-        if event == "CHAT_MSG_DND" then
-            -- print("CHAT_MSG_DND")
-            return false
-            -- local fbh_f_msg, fbh_f_sender = select('1', ...), gsub(select('2', ...), FBHREALM, "")
-            -- if strfind(fbh_f_msg, FBHCode, 1) == 1 then
-                -- fbh_hook_sender(fbh_f_sender)
-                -- local kunde = gsub(fbh_f_msg, FBHCode, "")
-                -- InviteUnit(kunde)
-            -- end
-        end
-        
         if event == "CHAT_MSG_WHISPER" then
             local fbh_f_msg, fbh_f_sender = select('1', ...), gsub(select('2', ...), FBHREALM, "")
             if strfind(fbh_f_msg, FBHCode, 1) == 1 then
