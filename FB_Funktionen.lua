@@ -287,7 +287,7 @@ local function fbh_hideDND(self, event, msg, author, ...)
                 ret_dnd = true
             end
         end
-    end -- Always show messages if we are not hiding codewords
+    end
     return ret_dnd
 end
 
