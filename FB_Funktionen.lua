@@ -1,28 +1,25 @@
 ﻿function fbh_targetName()
-    if(UnitExists("target")) then                                   -- Ist überhaupt ein Target vorhanden?
-        local fbh_tan = GetUnitName("target")                       -- Namen vom Target in Variable speichern
-        local fbh_tir_check = fbh_targetInRaid(fbh_tan)             -- Prüfung: Ob sich der anvisierte Spieler in deinem Raid befindet
-        if fbh_tir_check then                                       -- Wenn Prüfung erfolgreich Rückgabe-Variable ist postiv (wahr)
+    if(UnitExists("target")) then
+        local fbh_tan = GetUnitName("target")
+        local fbh_tir_check = fbh_targetInRaid(fbh_tan)
+        if fbh_tir_check then
             return fbh_tan
-        -- else
-            -- print("Target not in Our Raid")
-            -- return false    -- Target not in Raid
         end
     else
-        return false                                                -- Abbruch, weil kein Target vorhanden.
+        return false
     end
 end
 
-function fbh_targetInRaid(fbh_tir_name)                             -- Funktion zur Prüfung ob Spieler mit dem an die Funktion übergebenen Namen sich im Raid befindet.
-    local tir_gm = GetNumGroupMembers()                               -- Anzahl der aktuell im Raid vorhandenen Spieler in Variable speichern.
-    local tir_tir = false                                             -- Rückgabe-Variable auf negativ (unwahr) setzen
-    for i = 1, tir_gm do                                              -- Schleife zum abfragen der Spieler-Namen im Raid
+function fbh_targetInRaid(fbh_tir_name)
+    local tir_gm = GetNumGroupMembers()
+    local tir_tir = false
+    for i = 1, tir_gm do
         local name = GetRaidRosterInfo(i)
-        if name == fbh_tir_name then                                -- stimmt einer der abgefragten Spieler-Namen mit dem an die Funktion übergebenen Namen überein?
-            tir_tir = true                                            -- Rückgabe-Variable auf positiv (wahr) setzen
+        if name == fbh_tir_name then
+            tir_tir = true
         end
     end
-    return tir_tir                                                    -- absenden der Rückgabe-Variable
+    return tir_tir
 end
 
 function fbh_kickto(fbh_id_gruppenfuehrer)
@@ -30,30 +27,32 @@ function fbh_kickto(fbh_id_gruppenfuehrer)
         FBHKicker = true
         local fbh_kunde = fbh_targetName()
         if fbh_kunde then
-            SendChatMessage(FBHMessage..fbh_id_gruppenfuehrer, "WHISPER", nil, fbh_kunde)
+            SendChatMessage(FBHKickMessageW .. fbh_id_gruppenfuehrer, "WHISPER", nil, fbh_kunde)
             UninviteUnit(fbh_kunde)
-            SendChatMessage(FBHCode..fbh_kunde, "WHISPER", nil, fbh_id_gruppenfuehrer)
+            SendChatMessage(FBHCode .. fbh_kunde, "WHISPER", nil, fbh_id_gruppenfuehrer)
         end
     end
 end
 
-function fbh_unit_in_ini(uii)
-    local fbh_inIni, fbh_iniTyp = IsInInstance(uii)
-    if fbh_inIni then
-        return fbh_iniTyp
+function fbh_player_inRaid()
+    FBHRAID = false
+    local fbh_raidCheck = UnitInRaid("player")
+    if fbh_raidCheck then
+        FBHRAID = true
     else
-        return false
+        fbh_guiFrame:Hide()
     end
+    return FBHRAID
 end
 
 function fbh_player_hasRights()
-    local hasRights = false
+    FBHLeadOrAssi = false
     local fbh_leadCheck = UnitIsGroupLeader("player")
     local fbh_assistCheck = UnitIsGroupAssistant("player")
     if fbh_leadCheck or fbh_assistCheck then
-        hasRights = true
+        FBHLeadOrAssi = true
     end
-    return hasRights
+    return FBHLeadOrAssi
 end
 
 function fbh_count_wait()
@@ -80,16 +79,53 @@ function fbh_count_ini()
     return cini_count
 end
 
+function fbh_get_tankassist()
+    FBHtank = nil
+    FBHassist = nil
+    local gngm = GetNumGroupMembers()
+    for raidIndex = 1, gngm do
+        local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(raidIndex);
+        if role == "MAINTANK" then
+            FBHtank = name
+        end
+        if role == "MAINASSIST" then
+            FBHassist = name
+        end
+    end
+end
+
+function fbh_statusempfang(to_hook)
+    fbh_player_inRaid()
+    if to_hook ~= nil and FBHRAID then
+        C_ChatInfo.SendAddonMessage(FBHHookSender, 1, "WHISPER", to_hook)
+    end
+end
+
 function fbh_hook_sender(fbh_sender_hook)
+    local sender_to_hook = gsub(fbh_sender_hook, FBHREALM, "")
     local sender_hook_size = getn(fbh_hooked_sender)
     if sender_hook_size == 0 then
-        fbh_hooked_sender[1] = fbh_sender_hook
+        fbh_hooked_sender[1] = sender_to_hook
     elseif sender_hook_size > 0 then
         for arr = 1, sender_hook_size do
-            if fbh_hooked_sender[arr] == fbh_sender_hook then
+            if fbh_hooked_sender[arr] == sender_to_hook then
                 return false
             else
-                fbh_hooked_sender[sender_hook_size + 1] = fbh_sender_hook
+                fbh_hooked_sender[sender_hook_size + 1] = sender_to_hook
+            end
+        end
+    end
+end
+
+function fbh_unhook_offline_sender(to_unhook)
+    local fbh_unhook_array = {strsplit("'", to_unhook)}
+    local fbh_unhook_name = fbh_unhook_array[2]
+    local sender_hook_size = getn(fbh_hooked_sender)
+    if sender_hook_size > 0 then
+        for arr = 1, sender_hook_size do
+            if fbh_hooked_sender[arr] == fbh_unhook_name then
+                print(fbh_unhook_name .. " ist aus der Statusliste entfernt worden.")
+                fbh_hooked_sender[arr] = nil
             end
         end
     end
@@ -105,49 +141,54 @@ function fbh_hook_status(fbh_status_hook)
 end
 
 function fbh_update_status()
+    local win_height = 25
     if not next(fbh_hooked_status) then
+        fbh_guiFrame:Hide()
         return false
     else
-        local win_height = 25
         local height_count = 0
         fbh_status_window = true
         local new_names = ""
         local new_status = ""
         for t_name, t_status in pairs (fbh_hooked_status) do
-            new_names = new_names..t_name..fbh_newline
-            new_status = new_status..t_status..fbh_newline
+            new_names = new_names .. t_name .. fbh_newline
+            new_status = new_status .. t_status .. fbh_newline
             win_height = win_height + 30
             height_count = height_count + 1
         end
     fbh_show_window()
-    -- statusQuo:SetText(new_status)
     statusName:SetText(new_names)
     statusText:SetText(new_status)
     fbh_guiFrame:SetSize(fbh_width, win_height - 10)
     end
 end
 
+function fbh_set_status_msg()
+    if FBHLeadOrAssi then
+        local gru_ini = fbh_count_ini()
+        local gru_wait = fbh_count_wait()
+        fbh_id_status = "Status#"..FBHPLAYER..":"..gru_ini.." drin "..gru_wait.." in Warteposition"
+    end
+end
+
 function fbh_send_status()
-    local send_hook_size = getn(fbh_hooked_sender)
-    if send_hook_size > 0 then
-        for arr = 1, send_hook_size do
-            C_ChatInfo.SendAddonMessage(FBHStatus, fbh_id_status, "WHISPER", fbh_hooked_sender[arr])
+    if FBHLeadOrAssi then
+        local send_hook_size = getn(fbh_hooked_sender)
+        if send_hook_size > 0 then
+            for arr = 1, send_hook_size do
+                C_ChatInfo.SendAddonMessage(FBHStatus, fbh_id_status, "WHISPER", fbh_hooked_sender[arr])
+            end
+        else
+            return false
         end
-    else
-        return false
     end
 end
 
 function fbh_kill_status()
-    local absender, realm = UnitName("player")
-    local send_hook_size = getn(fbh_hooked_sender)
-    if send_hook_size > 0 then
-        for arr = 1, send_hook_size do
-            C_ChatInfo.SendAddonMessage(FBHDelete, absender, "WHISPER", fbh_hooked_sender[arr])
-        end
-    else
-        return false
-    end
+    fbh_id_status = FBHStatusCode .. "delete"
+    fbh_send_status()
+    fbh_id_status = ""
+    fbh_hooked_sender = {}
 end
 
 function fbh_delete_status(to_delete)
@@ -160,13 +201,10 @@ function fbh_delete_status(to_delete)
 end
 
 function fbh_show_window()
-    local fbh_ini, fbh_typ = IsInInstance("player")
     if not next(fbh_hooked_status) then
         fbh_status_window = false
     else
-        if fbh_ini == false and fbh_typ == "none" then
-            fbh_status_window = true
-        end
+        fbh_status_window = true
     end
     if fbh_status_window then
         fbh_guiFrame:Show()
@@ -175,23 +213,44 @@ function fbh_show_window()
     end
 end
 
-function fbh_check_for_spell(checkPlayer,checkSpellID,treshhold)-- return false if buff is running out or not exiting
-    for i=1,40 do
-    name,_, _,debuffType,duration,expirationTime , _,_, _, spellId,_ = UnitBuff(checkPlayer,i)
+function fbh_check_for_spell(checkPlayer, checkSpellID, treshhold)-- return false if buff is running out or not exiting
+    for i = 1, 40 do
+    name, _, _, debuffType, duration, expirationTime , _, _, _, spellId, _ = UnitBuff(checkPlayer,i)
     if name then 
-        if spellId==checkSpellID then
-        runout=((GetTime()-expirationTime))
-        runout_str=format("%.2f",runout)
-        duration_str=format("%.2f",duration)
+        if spellId == checkSpellID then
+        runout = ((GetTime() - expirationTime))
+        runout_str = format("%.2f", runout)
+        duration_str = format("%.2f", duration)
         --print(name.."=".."exptime= "..expirationTime..":"..runout.."/"..duration.."s")
-            if runout<duration*treshhold then
+            if runout < duration * treshhold then
                 return false
-                else
+            else
                 return true
             end
         end
     end
     end
     return false
+end
+
+function fbh_summon_msg(group, kassierer, portale)
+    if FBHassist == nil or FBHtank == nil then
+        fbh_get_tankassist()
     end
-    
+    local kunde = GetUnitName("target")
+    local zone = GetZoneText()
+    local port_msg = kunde .. ", ich beschwöre Dich nach " .. zone
+    fbh_send_msg(port_msg)
+    fbh_whisper(FBHSummonMessageW, kunde)
+    if portale ~= nil and portale == 1 then
+        fbh_portalmaker(kunde)
+    end
+    if kassierer ~= nil and kassierer == 1 then
+        fbh_kassierer(kunde)
+    end
+    if group ~= nil and group ~= 0 then
+        if group >= 1 or group <= 7 then
+            SetRaidSubgroup(UnitInRaid("target"), group)
+        end
+    end
+end

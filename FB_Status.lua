@@ -1,5 +1,5 @@
 fbhStatus = {}
-local addonVersion = 1.1
+local addonVersion = 2.1
 local posX, posY = -1, -1
 
 fbh_guiFrame = CreateFrame('Frame', "FastBuff_Status", UIParent)
@@ -122,37 +122,3 @@ end
 fbh_show_window()
 -- fbh_update_status()
 fbh_update_status()
-
-
-
--- statusQuo = fbh_guiFrame:CreateFontString()
--- statusQuo:SetFontObject("GameFontNormalLarge")
--- statusQuo:SetText('Kein Status vorhanden.')
--- statusQuo:ClearAllPoints()
--- statusQuo:SetPoint('TOPLEFT', 10, -15)
-
-
-
--- fbh_guiFrame.glow = fbh_guiFrame:CreateTexture(nil, 'OVERLAY')
--- fbh_guiFrame.glow:SetTexture('Interface/FrameGeneral/UI-Background-Rock')
--- fbh_guiFrame.glow:SetBlendMode('ADD')
--- fbh_guiFrame.glow:SetPoint('TOPLEFT', 6, -6)
--- fbh_guiFrame.glow:SetPoint('BOTTOMRIGHT', -6, 6)
--- fbh_guiFrame.glow:SetAlpha(0)
-
--- fbh_guiFrame.glowAnimation = fbh_guiFrame.glow:CreateAnimationGroup()
--- fbh_guiFrame.glowAnimation[1] = fbh_guiFrame.glowAnimation:CreateAnimation("Alpha")
--- fbh_guiFrame.glowAnimation[1]:SetDuration(0.25)
--- fbh_guiFrame.glowAnimation[1]:SetFromAlpha(1)
--- fbh_guiFrame.glowAnimation[1]:SetToAlpha(0)
-
-
--- local optionsButton = CreateFrame('Button', nil, fbh_guiFrame, 'GameMenuButtonTemplate')
--- optionsButton:SetSize(64, 24)
--- optionsButton:ClearAllPoints()
--- optionsButton:SetPoint('BOTTOMRIGHT', -8, 8)
--- optionsButton:SetText('Config')
--- optionsButton:SetScript('OnClick', function()
-    -- InterfaceOptionsFrame_OpenToCategory("FastBuff Helper")
-    -- InterfaceOptionsFrame_OpenToCategory("FastBuff Helper")
--- end)
