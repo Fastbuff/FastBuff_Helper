@@ -95,7 +95,6 @@ tabFrame.closeButton:SetPoint('TOPRIGHT', 0, 0)
 
 
 tabFrame.closeButton:SetScript('OnClick', function()
---    stopSearching()
     fbh_guiFrame:Hide()
     tabFrame:Show()
 end)
