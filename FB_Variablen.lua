@@ -1,12 +1,14 @@
 fbh_UpdateInterval = 1.0
 FBHCode = "fbh:ready#"
 FBHStatusCode = "Status#"
+FBHCountCode = "count:"
 FBHKickMessageW = "Ich schicke dich in die andere ID, nach dem Kick erfolgt umgehend eine Einladung von "
 FBHSummonMessageW = "Hey Du ... Ja genau Du ... Die Beschwörung ist im Gange. "
 FBHSummonMessage = " Bitte anschnallen! Dein Flug mit <FastBuff Airlines> wird vorbereitet."
 FBHPortalMessage = "<FastBuff Airlines> Achtung, hier entsteht ein Portal nach "
 FBHMageW = "Ein Portal gibts auf Wunsch dann am Nordeingang von "
 FBHPrefix = "FBHADDON"
+FBHShards = "FBHSHARDS"
 FBHStatus = "FBHSTATUS"
 FBHHookSender = "FBHHOOKSENDER"
 fbh_loaded = false
