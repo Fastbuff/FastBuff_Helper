@@ -1,4 +1,13 @@
-﻿function fbh_targetName()
+local addonName, FBH = ...
+
+local fbh_timer = C_Timer.NewTicker(fbh_UpdateInterval, function() FBH_OnUpdate() end)
+
+function FBH_OnUpdate()
+    fbh_roster_update()
+    check_new_list()
+end
+
+function fbh_targetName()
     if(UnitExists("target")) then
         local fbh_tan = GetUnitName("target")
         local fbh_tir_check = fbh_targetInRaid(fbh_tan)
@@ -20,6 +29,117 @@ function fbh_targetInRaid(fbh_tir_name)
         end
     end
     return tir_tir
+end
+
+function fbh_getZone(check_name)
+    local fbh_unit = nil
+    if check_name ~= nil then 
+        fbh_unit = check_name
+    else
+        fbh_unit = "target"
+    end
+    if (UnitExists(fbh_unit)) then
+        local fbh_taz = fbh_unit
+        if fbh_unit ~= "target" then
+            fbh_taz = fbh_unit
+        else
+            fbh_taz = fbh_targetName()
+        end
+        local fbh_num = GetNumGroupMembers()
+        for nuz = 1, fbh_num do
+            local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(nuz);
+            if name == fbh_taz then
+                fbh_target_zone = zone
+                return fbh_target_zone
+            end
+        end
+    else
+        return false
+    end
+end
+
+function fbh_roster_update()
+    reloadRaidList()
+    fbh_player_hasRights()
+    fbh_get_tankassist()
+    fbh_player_zone = GetZoneText()
+end
+
+function newMembers(new_name)
+    local newMembers_size = getn(FBHnewMemberList)
+    if newMembers_size == 0 then
+        FBHnewMemberList[1] = new_name
+    elseif newMembers_size > 0 then
+        for arr = 1, newMembers_size do
+            if FBHnewMemberList[arr] == new_name then
+                return false
+            else
+                FBHnewMemberList[newMembers_size + 1] = new_name
+            end
+        end
+    end
+end
+
+function check_new_list()
+    local cnl = getn(FBHnewMemberList)
+    local temp_name = nil
+    if cnl > 0 then
+        for arr = 1, cnl do
+            temp_name = FBHnewMemberList[arr]
+            if FBHRaidList[temp_name].zone ~= "Offline" then
+                fbh_check_portal(temp_name)
+                FBHnewMemberList[arr] = nil
+            end
+        end
+    end
+end
+
+function fbh_check_portal(check_name)
+    if FBHleader then
+        local new_name = check_name
+        local new_zone = FBHRaidList[new_name].zone
+        local new_has_dm = check_dm_buffs(new_name)
+        if new_has_dm > 0 and new_zone == FBHdmz then
+            SetRaidSubgroup(UnitInRaid(new_name), 7)
+        elseif new_has_dm == 0 then
+            if new_zone == FBHdmz or new_zone == FBHdmf then
+                SetRaidSubgroup(UnitInRaid(new_name), 5)
+            end
+        end
+    end
+end
+
+function reloadRaidList()
+    wipe{FBHRaidList}
+    FBHRaidList = FBH.getRaidMembers()
+end
+
+local fbh_raidMemberList = {}
+function FBH.getRaidMembers()
+    wipe(fbh_raidMemberList)
+    for ci = 1, MAX_RAID_MEMBERS do
+        local name, rank, subgroup, level, class, classFileName, zone, online, isDead, role, isML = GetRaidRosterInfo(ci)
+        -- Set online to boolean variable
+        if (online == 1) or (online == true) then
+            online = true
+        else
+            online = false
+        end
+        if name ~= nil then
+            fbh_raidMemberList[name] = {
+            name = name,
+            -- rank=rank,
+            -- level=level,
+            -- class=class,
+            zone = zone,
+            online = online,
+            -- classFileName=classFileName,
+            subgroup = subgroup,
+            index = ci,
+            }
+        end
+    end
+    return fbh_raidMemberList
 end
 
 function fbh_kickto(fbh_id_gruppenfuehrer, hide_msg)
@@ -217,6 +337,16 @@ function fbh_show_window()
     else
         fbh_guiFrame:Hide()
     end
+end
+
+function check_dm_buffs(dm_name)
+    target_has_dm_buffs = 0
+    c_thdm = 0
+    if fbh_check_for_spell(dm_name,22820,0) then c_thdm = c_thdm + 1 end
+    if fbh_check_for_spell(dm_name,22817,0) then c_thdm = c_thdm + 1 end
+    if fbh_check_for_spell(dm_name,22818,0) then c_thdm = c_thdm + 1 end
+    target_has_dm_buffs = c_thdm
+    return target_has_dm_buffs
 end
 
 function fbh_check_for_spell(checkPlayer, checkSpellID, treshhold)-- return false if buff is running out or not exiting
