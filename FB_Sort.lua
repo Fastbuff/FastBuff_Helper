@@ -85,23 +85,3 @@ function fbh_sort()
         end
     end        
 end
-
-function fbh_check_for_spell(checkPlayer, checkSpellID, treshhold)-- return false if buff is running out or not exiting
-    for i = 1, 40 do
-        name, _, _, debuffType, duration, expirationTime , _, _, _, spellId, _ = UnitBuff(checkPlayer,i)
-        if name then 
-            if spellId == checkSpellID then
-                runout = ((GetTime()-expirationTime))
-                runout_str = format("%.2f", runout)
-                duration_str = format("%.2f", duration)
-                --print(name.."=".."exptime= "..expirationTime..":"..runout.."/"..duration.."s")
-                if runout < duration * treshhold then
-                    return false
-                else
-                    return true
-                end
-            end
-        end
-    end
-    return false
-end
