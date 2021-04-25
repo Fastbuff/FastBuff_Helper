@@ -26,6 +26,10 @@ function FBHA_OnEvent(self, event, ...)
             if strfind(fbh_cmc, FBHoffline, 1) == 1 then
                 fbh_unhook_offline_sender(fbh_cmc)
             end
+            if strmatch(fbh_cmc, FBHnewMember) and UnitIsGroupLeader("player") then
+                local new_raid_member = gsub(fbh_cmc, FBHnewMember, "")
+                newMembers(new_raid_member)
+            end
         end
         if event == "CHAT_MSG_ADDON" then
             fbh_player_inRaid()
