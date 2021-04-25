@@ -44,3 +44,8 @@ Makros:
 ### wenn z = 1 dann bekommt Target Whisper wer Portale stellt falls einer Hauptassistent eingestellt ist
 
 ######################
+
+### Makro um einen Hexer nach der Anzahl seiner Seelensplitter im Inventar abzufragen
+
+/run fbh_ask_shards( "Charname" )
+
