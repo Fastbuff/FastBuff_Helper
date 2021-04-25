@@ -1,5 +1,6 @@
 local FBHA = CreateFrame("Frame", "FBHA", UIParent)
 C_ChatInfo.RegisterAddonMessagePrefix(FBHPrefix)
+C_ChatInfo.RegisterAddonMessagePrefix(FBHShards)
 C_ChatInfo.RegisterAddonMessagePrefix(FBHStatus)
 C_ChatInfo.RegisterAddonMessagePrefix(FBHHookSender)
 FBHA:RegisterEvent("ADDON_LOADED")
@@ -43,6 +44,16 @@ function FBHA_OnEvent(self, event, ...)
                     fbh_delete_status(cma_from)
                 else    
                     fbh_hook_status(cma_msg)
+                end
+            elseif cma_pre == FBHShards then
+                if cma_msg == "status" then
+                    local scount = count_shards()
+                    local smsg = FBHCountCode .. scount
+                    C_ChatInfo.SendAddonMessage(FBHShards, smsg, "WHISPER", cma_from)
+                end
+                if strfind(cma_msg, FBHCountCode, 1) == 1 then
+                    local cstatus = gsub(cma_msg, FBHCountCode, "")
+                    print(cma_from .. " hat noch " .. cstatus .. " Seelensplitter.")
                 end
             elseif cma_pre == FBHHookSender then
                 if FBHRAID and FBHLeadOrAssi then
