@@ -173,9 +173,9 @@ end
 
 function fbh_player_hasRights()
     FBHLeadOrAssi = false
-    local fbh_leadCheck = UnitIsGroupLeader("player")
+    FBHleader = UnitIsGroupLeader("player")
     local fbh_assistCheck = UnitIsGroupAssistant("player")
-    if fbh_leadCheck or fbh_assistCheck then
+    if FBHleader or fbh_assistCheck then
         FBHLeadOrAssi = true
     end
     return FBHLeadOrAssi
@@ -350,7 +350,7 @@ function check_dm_buffs(dm_name)
 end
 
 function fbh_check_for_spell(checkPlayer, checkSpellID, treshhold)-- return false if buff is running out or not exiting
-    for i = 1, 40 do
+    for i = 1, MAX_RAID_MEMBERS do
     name, _, _, debuffType, duration, expirationTime , _, _, _, spellId, _ = UnitBuff(checkPlayer,i)
     if name then 
         if spellId == checkSpellID then
