@@ -94,8 +94,21 @@ function check_new_list()
     end
 end
 
+function check_ini(drin_oder_draussen)
+    local isNichtDrin
+    local isIni, iniTyp = IsInInstance()
+    if drin_oder_draussen == nil or drin_oder_draussen == "drin" then
+        isNichtDrin = isIni
+    end
+    if drin_oder_draussen == "draussen" then
+        isNichtDrin = true and not isIni
+    end
+    return isNichtDrin
+end
+
 function fbh_check_portal(check_name)
-    if FBHleader then
+    local isRaus = check_ini("draussen")
+    if FBHleader and isRaus then
         local new_name = check_name
         local new_zone = FBHRaidList[new_name].zone
         local new_has_dm = check_dm_buffs(new_name)
@@ -376,6 +389,7 @@ function fbh_summon_msg(group, kassierer, portale)
     local kunde = GetUnitName("target")
     local zone = GetZoneText()
     local port_msg = kunde .. ", ich beschwöre Dich nach " .. zone
+    local draussen = check_ini("draussen")
     fbh_send_msg(port_msg)
     fbh_whisper(FBHSummonMessageW, kunde)
     if portale ~= nil and portale == 1 then
@@ -384,7 +398,7 @@ function fbh_summon_msg(group, kassierer, portale)
     if kassierer ~= nil and kassierer == 1 then
         fbh_kassierer(kunde)
     end
-    if group ~= nil and group ~= 0 then
+    if group ~= nil and group ~= 0 and draussen then
         if group >= 1 or group <= 7 then
             SetRaidSubgroup(UnitInRaid("target"), group)
         end
