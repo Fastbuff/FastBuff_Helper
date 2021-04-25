@@ -27,7 +27,7 @@ function fbh_countmembers()
     fbh_initmembers()
     if IsInRaid() then
         for i = 1, MAX_RAID_MEMBERS do  
-            local name, rank, subgroup, level, class, fileName,zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i)
+            local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(i)
             if name then
                 if name ~= my_name then 
                     if subgroup < 8 then
