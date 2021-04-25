@@ -445,5 +445,13 @@ local function hideKICKWhispers(self, event, msg, author, ...)
     return hide_whisper
 end
 
+function count_shards()
+    return GetItemCount(6265)
+end
+
+function fbh_ask_shards(warlock)
+    C_ChatInfo.SendAddonMessage(FBHShards, "status", "WHISPER", warlock)
+end
+
 ChatFrame_AddMessageEventFilter("CHAT_MSG_DND", fbh_hideDND)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", hideKICKWhispers)
